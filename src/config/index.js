@@ -1,0 +1,3 @@
+export const TMDB_API = 'https://api.themoviedb.org/4';
+export const ACCESS_TOKEN =
+  'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NmEzZWRkMmNhYTk4OWRiNzZhYzU5ZGVlZmU0YWRiYyIsInN1YiI6IjYzYmFkZTk0ZTBjYTdmMDA4OWMyYjY4MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vjoeETYzmvZezZnDdrXo0rKOmC-gFMRKAcFMq063_QI';
