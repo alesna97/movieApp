@@ -15,7 +15,6 @@ const DetailScreen = ({route}) => {
   useEffect(() => {
     movies.recommendation.fetch();
   }, []);
-
   return (
     <ScrollView>
       <ImageBackground
@@ -28,7 +27,9 @@ const DetailScreen = ({route}) => {
           <View style={style.content}>
             <Image
               style={style.poster}
-              source={{uri: `https://image.tmdb.org/t/p/w500/${params.image}`}}
+              source={{
+                uri: `https://image.tmdb.org/t/p/w500/${params.poster_path}`,
+              }}
             />
             <View style={style.meta}>
               <Text style={style.titleText}>
@@ -41,7 +42,9 @@ const DetailScreen = ({route}) => {
               <View style={style.voteMetaContainer}>
                 <View style={style.voteWrapper}>
                   <View style={style.voteCount}>
-                    <Text style={style.voteText}>{params.average}</Text>
+                    <Text style={style.voteText}>
+                      {params.vote_average?.toFixed(1)}
+                    </Text>
                   </View>
                   <Text style={style.userScoreText}>User Score</Text>
                 </View>

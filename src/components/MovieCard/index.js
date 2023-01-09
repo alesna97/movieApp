@@ -2,29 +2,17 @@ import React from 'react';
 import {Image, Pressable, Text, View} from 'react-native';
 import useStyles from './styles';
 import dayjs from 'dayjs';
-import {useNavigation} from '@react-navigation/native';
 
-const MovieCard = ({title, image, releaseDate, average, ...props}) => {
+const MovieCard = ({title, image, releaseDate, average, onPress}) => {
   const styles = useStyles();
-  const navigation = useNavigation();
 
   return (
-    <Pressable
-      style={styles.card}
-      onPress={() =>
-        navigation.navigate('DetailScreen', {
-          title,
-          image,
-          release_date: releaseDate,
-          average,
-          ...props,
-        })
-      }>
+    <Pressable style={styles.card} onPress={onPress}>
       <View style={styles.voteCount}>
         <Text style={styles.voteText}>{average}</Text>
       </View>
       <Image
-        source={{uri: `https://image.tmdb.org/t/p/w500/${image}`}}
+        source={{uri: `https://image.tmdb.org/t/p/w500${image}`}}
         style={styles.cardImage}
         resizeMode="cover"
       />
