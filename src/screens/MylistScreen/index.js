@@ -3,7 +3,7 @@ import {ScrollView, View} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 import useList from '../../hooks/useList';
 import useStyles from './styles';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import dayjs from 'dayjs';
 
 const MyListScreen = () => {
   const {fetchList, list} = useList();
@@ -12,17 +12,23 @@ const MyListScreen = () => {
   useEffect(() => {
     fetchList();
   }, []);
+
   return (
     <ScrollView contentContainerStyle={style.container}>
       {list?.map(item => (
-        <Card key={item.id} style={style.card}>
+        <Card key={item.id} style={style.card} onPress>
           <Text style={style.nameText}>{item.name}</Text>
           <View style={style.listMeta}>
             <Text style={style.numberOfItemText}>
               {item.number_of_items} Item
             </Text>
-            {item.public === 1 && <Text style={style.publicText}>Public</Text>}
+            <Text style={style.publicText}>
+              {item.public === 1 ? 'Public' : 'Private'}
+            </Text>
           </View>
+          <Text style={style.updatedAtText}>
+            Updated at {dayjs(item.updated_at).format('dddd HH:MM')}
+          </Text>
         </Card>
       ))}
     </ScrollView>

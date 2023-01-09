@@ -1,11 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import {getListApi} from '../api/account';
-import {setFetchList, setList} from '../store/slice/listSlice';
+import {createListApi} from '../api/lists';
+import {
+  setCreateFetchList,
+  setFetchList,
+  setList,
+} from '../store/slice/listSlice';
 
 const useList = () => {
   const dispatch = useDispatch();
-  const {list} = useSelector(state => state.list);
+  const {list, isCreateList} = useSelector(state => state.list);
 
   const fetchList = async () => {
     try {
@@ -22,9 +27,26 @@ const useList = () => {
     }
   };
 
+  const createList = async params => {
+    try {
+      dispatch(setCreateFetchList(true));
+      const accessToken = await AsyncStorage.getItem('accessToken');
+      const result = await createListApi(accessToken, params);
+
+      if (result) {
+        dispatch(setCreateFetchList(false));
+        console.log(result);
+      }
+    } catch (error) {
+      dispatch(setCreateFetchList(false));
+    }
+  };
+
   return {
     fetchList,
     list,
+    createList,
+    isCreateList,
   };
 };
 

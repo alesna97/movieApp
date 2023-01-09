@@ -13,7 +13,7 @@ const Menu = () => {
       <View style={styles.menuItem}>
         <IconButton
           iconColor="white"
-          icon="playlist-check"
+          icon="movie-play"
           onPress={() => navigation.navigate('MyListScreen')}
         />
         <Text style={styles.menuTitleText}>My Lists</Text>
@@ -21,7 +21,7 @@ const Menu = () => {
       <View style={styles.menuItem}>
         <IconButton
           iconColor="white"
-          icon="pencil"
+          icon="movie-plus"
           onPress={() => navigation.navigate('CreateListScreen')}
         />
         <Text style={styles.menuTitleText}>Create List</Text>

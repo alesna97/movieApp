@@ -16,6 +16,7 @@ const useStyles = () => {
       width: '100%',
       alignItems: 'center',
       justifyContent: 'center',
+      marginBottom: 16,
     },
     nameText: {
       color: 'black',
@@ -26,6 +27,7 @@ const useStyles = () => {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'center',
       marginTop: 8,
     },
     publicText: {
@@ -39,6 +41,11 @@ const useStyles = () => {
       fontSize: 12,
       color: 'black',
       marginRight: 8,
+    },
+    updatedAtText: {
+      fontSize: 12,
+      color: 'black',
+      marginTop: 4,
     },
   });
 };

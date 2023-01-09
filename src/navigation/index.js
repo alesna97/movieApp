@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import useAuth from '../hooks/useAuth';
 import HomeScreen from '../screens/HomeScreen';
 import {navigationRef} from './RootNavigation';
 import {ActivityIndicator, Linking, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useTheme} from 'react-native-paper';
+import {IconButton, useTheme} from 'react-native-paper';
 import DetailScreen from '../screens/DetailScreen';
 import MyListScreen from '../screens/MylistScreen';
+import CreateListScreen from '../screens/CreateListScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,9 +32,21 @@ const styles = {
   },
 };
 
+const HeaderRight = () => {
+  const navigation = useNavigation();
+  return (
+    <IconButton
+      icon="movie-plus"
+      iconColor="white"
+      onPress={() => navigation.navigate('CreateListScreen')}
+    />
+  );
+};
+
 const Navigation = () => {
   const {checkAuth, createAccessToken, isFetchRequestToken} = useAuth();
   const theme = useTheme();
+
   const subscribe = () => {
     const linkingSubscription = Linking.addEventListener('url', async () => {
       try {
@@ -84,9 +97,18 @@ const Navigation = () => {
           component={DetailScreen}
         />
         <Stack.Screen
-          options={{...options, title: 'My List'}}
+          options={{
+            ...options,
+            title: 'My List',
+            headerRight: () => <HeaderRight />,
+          }}
           name="MyListScreen"
           component={MyListScreen}
+        />
+        <Stack.Screen
+          name="CreateListScreen"
+          component={CreateListScreen}
+          options={{...options, title: 'Create List'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
