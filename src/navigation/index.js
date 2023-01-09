@@ -4,11 +4,22 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import useAuth from '../hooks/useAuth';
 import HomeScreen from '../screens/HomeScreen';
 import {navigationRef} from './RootNavigation';
-import LoginScreen from '../screens/LoginScreen';
 import {ActivityIndicator, Linking, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useTheme} from 'react-native-paper';
+import DetailScreen from '../screens/DetailScreen';
+import MyListScreen from '../screens/MylistScreen';
 
 const Stack = createNativeStackNavigator();
+
+const linking = {
+  prefixes: ['movieapp://app'],
+  config: {
+    screens: {
+      HomeScreen: 'home',
+    },
+  },
+};
 
 const styles = {
   loadingContainer: {
@@ -22,6 +33,21 @@ const styles = {
 
 const Navigation = () => {
   const {checkAuth, createAccessToken, isFetchRequestToken} = useAuth();
+  const theme = useTheme();
+  const subscribe = () => {
+    const linkingSubscription = Linking.addEventListener('url', async () => {
+      try {
+        await AsyncStorage.setItem('isApprovedRequestToken', '1');
+        createAccessToken();
+      } catch (error) {
+        console.log(error);
+      }
+    });
+
+    return () => {
+      linkingSubscription.remove();
+    };
+  };
 
   useEffect(() => {
     checkAuth();
@@ -35,42 +61,32 @@ const Navigation = () => {
     );
   }
 
-  return (
-    <NavigationContainer
-      ref={navigationRef}
-      linking={{
-        prefixes: ['movieapp://app'],
-        subscribe() {
-          const linkingSubscription = Linking.addEventListener(
-            'url',
-            async () => {
-              try {
-                await AsyncStorage.setItem('isApprovedRequestToken', '1');
-                createAccessToken();
-              } catch (error) {}
-            },
-          );
+  const options = {
+    headerTintColor: 'white',
+    headerStyle: {backgroundColor: theme.colors.secondary},
+    headerTitleStyle: {color: 'white'},
+    headerBackTitleStyle: {
+      color: 'white',
+    },
+  };
 
-          return () => {
-            linkingSubscription.remove();
-          };
-        },
-        config: {
-          screens: {
-            HomeScreen: 'home',
-          },
-        },
-      }}>
+  return (
+    <NavigationContainer ref={navigationRef} linking={{...linking, subscribe}}>
       <Stack.Navigator>
         <Stack.Screen
           name="HomeScreen"
           component={HomeScreen}
-          options={{title: 'Movie App'}}
+          options={{...options, title: 'TheMovieApp'}}
         />
         <Stack.Screen
-          name="LoginScreen"
-          component={LoginScreen}
-          options={{title: 'Login'}}
+          options={({route}) => ({...options, title: route?.params?.title})}
+          name="DetailScreen"
+          component={DetailScreen}
+        />
+        <Stack.Screen
+          options={{...options, title: 'My List'}}
+          name="MyListScreen"
+          component={MyListScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

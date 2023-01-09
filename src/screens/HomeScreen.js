@@ -1,24 +1,34 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useEffect} from 'react';
-import {Text, View} from 'react-native';
-import {getMovieRecommendationApi} from '../api/account';
+import {ScrollView, View} from 'react-native';
+import Hero from '../components/Hero';
+import MovieList from '../components/MovieList';
+import useMovies from '../hooks/useMovies';
+import useTv from '../hooks/useTv';
 
 const HomeScreen = () => {
-  const fetchMovieRecommendation = async () => {
-    try {
-      const accountId = await AsyncStorage.getItem('accountId');
-      const result = await getMovieRecommendationApi(accountId);
-
-      console.log(result.data);
-    } catch (error) {}
-  };
+  const movies = useMovies();
+  const tv = useTv();
 
   useEffect(() => {
-    fetchMovieRecommendation();
+    movies.recommendation.fetch();
+    tv.recommendation.fetch();
   }, []);
+
   return (
     <View>
-      <Text>test</Text>
+      <ScrollView>
+        <Hero />
+        <MovieList
+          title="Recommended Movie"
+          loading={movies.recommendation.isFetching}
+          data={movies.recommendation.results || []}
+        />
+        <MovieList
+          loading={movies.recommendation.isFetching}
+          title="Recommended TV"
+          data={tv.recommendation.results || []}
+        />
+      </ScrollView>
     </View>
   );
 };
