@@ -1,0 +1,13 @@
+Min         Topic
+01:00       Folder Structure
+03:30       How to run locally
+05:30       Homescreen
+06:00       useMovies Hook
+08:40       React Query
+09:40       Authentication
+20:00       Redux & Redux toolkit
+23:40       Ui Library
+25:20       CreateListScreen
+26:40       useList Hook
+28:50       Unit testing
+33:00       Development Tools (eslint, prettier, etc)
